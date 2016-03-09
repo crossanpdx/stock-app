@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>stock-app</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/public/css/style.css"/>
+</head>
+
+<body ng-app="niteStockChart">
+    <div ng-controller="index">
+      
+    <div class="col-md-12 text-center">
+    <h1>stock-app</h1>
+    </div>
+    
+    <div class="col-md-12 chart-wrap">
+      <canvas id="stockChart" width="800px" height="500px"></canvas>
+      <div id="stockChart-legend" class="chart-legend text-center"></div>
+    </div>
+    
+    <div class="col-md-12 text-center">
+        <div ng-if="help">
+          <div class="alert alert-dismissible alert-danger">
+            <button type="button" ng-click="closeHelp()" class="close" data-dismiss="alert"><i class="fa fa-times"></i></button>
+              {{help}}
+          </div>
+        </div>
+        <form>
+            <div class="form-group">
+              <div class="input-group" data-toggle="tooltip" data-placement="top" title="Add stock symbol to add a new stock item and update chart">
+                <input ng-model="newStockSymbol" name="new-stock" type="text" class="form-control" placeholder="Stock code..." />
+                <span class="input-group-btn">
+                  <input type="submit" ng-click="addStock()" id="submitStock" class="btn btn-block btn-add" value="Add Stock" />
+                </span>
+              </div>
+            </div>
+        </form>
+    </div>
+    
+    <div class="col-md-12" ng-if="loading">
+      <div class="jumbotron text-center">
+        <h3><i class="fa fa-refresh fa-5x fa-spin"></i><br>Loading Stock Data...</h3>
+      </div>
+    </div>
+    
+    <div class="col-md-3 col-sm-6" ng-repeat="stock in stocks">
+      <div class="well text-center">
+        <button type="button" ng-click="deleteRequest(stock.symbol)" class="close"><i class="fa fa-times"></i></button><br>
+        <h3>{{ stock.symbol }}</h3>
+        <p>{{ stock.name }}</p>
+        <div ng-if="stock.delete"><small>Are you sure you want to delete this stock?</small><br>
+        <button ng-click="deleteCancel(stock.symbol)" class="btn btn-warning btn-xs">Keep</button><button ng-click="deleteConfirm(stock.symbol)" class="btn btn-danger btn-xs">Delete</a></div>
+      </div>
+    </div>
+    
+    <div class="col-md-12 footer text-center">
+        <div class="col-md-12">
+          <h4>Instructions.</h4>
+          <p><small>Add stocks by entering a stock symbol (e.g. GOOGL, AAPL, AMZN, EBAY).</small></p>
+          <p><small>Remove stocks by clicking 'x' on the stock item you want to remove.</small></p>
+        </div>
+
+    </div>
+    
+    
+    </div>
+    
+    <!-- Scripts -->
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.29/angular.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    
+    <!-- Modules -->
+    <script src="/public/app/app.js"></script>
+    
+    <!-- Services -->
+    <script src="/public/app/services/stock.js"></script>
+    
+</body>
+</html>
